@@ -2,23 +2,15 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output
 import scraper as scrap
-
-
-
-
-# getting data from scraping module
-data = scrap.get_data()
-data['percentage D/C'] = data['Total Deaths']/data['Total Cases']*100
-
-
+import tab1 as tab1
+import tab2 as tab2
+import colors as colors
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-colors = {
-    'background': '#111111',
-    'text': '#7FDBFF'
-}
+colors = colors.get()
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -30,48 +22,20 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
             'color': colors['text']
         }
     ),
-
-    # Total Cases per Country Graph
-    dcc.Graph(
-        id='total-cases-per-country-graph',
-        figure={
-            'data': [
-                {'x': data.index, 'y': data['Total Cases'], 'type': 'bar', 'name': 'Total Cases'},
-                {'x': data.index, 'y': data['Total Recovered'], 'type': 'bar', 'name': 'Total Recovered'},
-                {'x': data.index, 'y': data['Total Deaths'], 'type': 'bar', 'name': 'Total Deaths'}
-            ],
-            'layout': {
-                'title': 'Total Cases per Country',
-                'plot_bgcolor': colors['background'],
-                'paper_bgcolor': colors['background'],
-                'font': {
-                    'color': colors['text']
-                }
-            }
-        }
-    ),
-
-    # Death ratio per Country Graph
-    dcc.Graph(
-        id='ratio-per-country-graph',
-        figure={
-            'data': [
-                {'x': data.index, 'y': data['percentage D/C'], 'type': 'bar'}
-            ],
-            'layout': {
-                'title': 'Total Deaths/Total Cases Percentage',
-                'plot_bgcolor': colors['background'],
-                'paper_bgcolor': colors['background'],
-                'font': {
-                    'color': colors['text']
-                }
-            }
-        }
-    )
-
-
-
+    dcc.Tabs(id="tabs", value='tab-1', children=[
+        dcc.Tab(label='Today\'s data', value='tab-1'),
+        dcc.Tab(label='Historical data', value='tab-2'),
+    ]),
+    html.Div(id='tabs-content')
 ])
+
+@app.callback(Output('tabs-content', 'children'),
+              [Input('tabs', 'value')])
+def render_content(tab):
+  if tab == 'tab-1':
+    return tab1.get_content()
+  elif tab == 'tab-2':
+    return tab2.get_content()
 
 if __name__ == '__main__':
     app.run_server(debug=True)
