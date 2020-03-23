@@ -13,9 +13,6 @@ data['percentage D/C'] = data['Total Deaths']/data['Total Cases']*100
 
 
 
-print(data.index)
-
-
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 colors = {
