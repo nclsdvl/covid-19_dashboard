@@ -3,6 +3,7 @@ import requests
 import bs4 as BeautifulSoup
 import pandas as pd 
 import numpy as np
+from atr_continent import attribution_continent
 
 def pretty(string):
   return string.replace(',','').strip()
@@ -37,4 +38,5 @@ def get_data():
   data = pd.DataFrame(countries, index=indexes, columns = columns, dtype="i") 
   data = data.replace(r'^\s*$', np.nan, regex=True).fillna(0)
   data = data.astype('int')
+  attribution_continent(data)
   return data

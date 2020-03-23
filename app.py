@@ -11,6 +11,9 @@ import scraper as scrap
 data = scrap.get_data()
 data['percentage D/C'] = data['Total Deaths']/data['Total Cases']*100
 
+pays = ""
+for elt in data.index :
+    pays += elt+"\n"
 
 
 print(data.index)
