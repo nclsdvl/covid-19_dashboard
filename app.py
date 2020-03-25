@@ -7,14 +7,15 @@ import scraper as scrap
 import tab1 as tab1
 import tab2 as tab2
 import tab3 as tab3
+import tab4 as tab4
 import colors as colors
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
 
 colors = colors.get()
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
+app = dash.Dash(__name__,)
+app.config.suppress_callback_exceptions = True
 app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
     html.H1(
         children='Covid-19 Statistics',
@@ -26,7 +27,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     dcc.Tabs(id="tabs", value='tab-1', children=[
         dcc.Tab(label='Today\'s Global Data', value='tab-1'),
         dcc.Tab(label='Historical Global Data', value='tab-2'),
-        dcc.Tab(label='Data per country', value='tab-3')
+        dcc.Tab(label='Data per country', value='tab-3'),
+        dcc.Tab(label='French Data', value='tab-4')
     ]),
     html.Div(id='tabs-content')
 ])
@@ -40,8 +42,13 @@ def render_content(tab):
     return tab2.get_content()
   elif tab == 'tab-3':
     return tab3.get_content()
+  elif tab == 'tab-4' :
+    return tab4.get_content()
 
-
+@app.callback(Output('country-data', 'children'),
+              [Input('countries-dropdown', 'value')])
+def return_graph(country):
+    return country
 
 
 
