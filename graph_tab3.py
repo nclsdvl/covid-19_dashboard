@@ -11,15 +11,15 @@ import colors as colors
 
 def get_content(country):
     data = hs.get_data()
-    france_data = data[data['Country'] == 'France']
+    country_data = data[data['Country'] == country]
     return html.Div([
         dcc.Graph(
           figure={
             'data': [
-              {'x': france_data['Date'], 'y': france_data['Total Cases'], 'type': 'bar', 'name': 'Total Cases'},
-              {'x': france_data['Date'], 'y': france_data['Total Deaths'], 'type': 'bar', 'name': 'Total Deaths'},
-              {'x': france_data['Date'], 'y': france_data['New Cases'], 'type': 'bar', 'name': 'New Cases'},
-              {'x': france_data['Date'], 'y': france_data['New Deaths'], 'type': 'bar', 'name': 'New Deaths'}
+              {'x': country_data['Date'], 'y': country_data['Total Cases'], 'type': 'bar', 'name': 'Total Cases'},
+              {'x': country_data['Date'], 'y': country_data['Total Deaths'], 'type': 'bar', 'name': 'Total Deaths'},
+              {'x': country_data['Date'], 'y': country_data['New Cases'], 'type': 'bar', 'name': 'New Cases'},
+              {'x': country_data['Date'], 'y': country_data['New Deaths'], 'type': 'bar', 'name': 'New Deaths'}
             ]
           }
         )
