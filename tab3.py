@@ -1,11 +1,18 @@
 # -*- coding: utf-8 -*-
-import dash
+
 import dash_core_components as dcc
 import dash_html_components as html
 import colors as colors
 import countries_dropdown as countries_dropdown
+import scraper as scrap
+import historical_scraper as hs
 
+country = 'France'
+ 
 colors = colors.get()
+data = scrap.get_data()
+
+print(data[data.index == country]['Total Cases'])
 
 def get_content():
   return html.Div([
@@ -20,5 +27,13 @@ def get_content():
       html.Div([
         countries_dropdown.get()
       ])
-    ])
-  ])
+    ]),
+    
+    html.Div(id='country-data'
+ 
+            
+        ),
+
+  ], 
+    
+    )
