@@ -11,15 +11,19 @@ import colors as colors
 import json
 import pandas as pd
 import plotly.express as px
+import os
 
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+geojson_file = os.path.join(dir_path, 'map/departements.geojson')
+csv_file = os.path.join(dir_path, 'map/data_clean_23_03.csv')
 
 colors = colors.get()
-with open('./map/departements.geojson', 'r', encoding='utf-8') as f:
+with open(geojson_file, 'r', encoding='utf-8') as f:
     t = f.read()
     locations = json.loads(t)
     
-df = pd.read_csv('./map/data_clean_23_03.csv', encoding='utf-8') 
+df = pd.read_csv(csv_file, encoding='utf-8') 
 df = df.rename(columns={'Code': 'code'})
 
 
@@ -31,7 +35,7 @@ fig = px.choropleth(df, geojson=locations, color="Nombre cumulé total décédé
 fig.update_geos(fitbounds="locations", visible=False)
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 fig.update_layout(paper_bgcolor='#111')
-fig.show()
+# fig.show()  # J'ai commenté le show car il ouvre un nouvel onglet systématiquement ;)
 
 
 
@@ -40,7 +44,7 @@ def get_content():
 
     html.Div([
         html.H6(
-            children='French data on : {}'.format(df.columns[2][-10:]),
+            children='France data per department, from the beginning of covid-19 to {}'.format(df.columns[2][-10:]),
             style={
                 'textAlign': 'center',
                 'color': colors['text']

@@ -10,9 +10,6 @@ import historical_scraper as hs
 country = 'France'
  
 colors = colors.get()
-data = scrap.get_data()
-
-print(data[data.index == country]['Total Cases'])
 
 def get_content():
   return html.Div([
@@ -28,12 +25,5 @@ def get_content():
         countries_dropdown.get()
       ])
     ]),
-    
-    html.Div(id='country-data'
- 
-            
-        ),
-
-  ], 
-    
-    )
+    html.Div(id='country-data'),
+  ])

@@ -29,7 +29,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
         dcc.Tab(label='Today\'s Global Data', value='tab-1'),
         dcc.Tab(label='Historical Global Data', value='tab-2'),
         dcc.Tab(label='Data per country', value='tab-3'),
-        dcc.Tab(label='French Data', value='tab-4')
+        dcc.Tab(label='France Data', value='tab-4')
     ]),
     html.Div(id='tabs-content')
 ])
@@ -52,7 +52,5 @@ def return_graph(country):
  
     return graph_tab3.get_content(country)
 
-
-
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)

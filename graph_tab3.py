@@ -9,25 +9,18 @@ import historical_scraper as hs
 import dash_html_components as html
 import colors as colors
 
-data = hs.get_data()
-
-
-
-
 def get_content(country):
-
+    data = hs.get_data()
+    france_data = data[data['Country'] == 'France']
     return html.Div([
         dcc.Graph(
-         
           figure={
             'data': [
-              {'x': data['Date'], 'y': data[data["Country"] == country]['Total Cases'], 'type': 'bar', 'name': 'Total Cases'},
-              {'x': data['Date'], 'y': data[data["Country"] == country]['Total Deaths'], 'type': 'bar', 'name': 'Total Deaths'},
-              {'x': data['Date'], 'y': data[data["Country"] == country]['New Cases'], 'type': 'bar', 'name': 'New Cases'},
-              {'x': data['Date'], 'y': data[data["Country"] == country]['New Deaths'], 'type': 'bar', 'name': 'New Deaths'}
-            ],
-
+              {'x': france_data['Date'], 'y': france_data['Total Cases'], 'type': 'bar', 'name': 'Total Cases'},
+              {'x': france_data['Date'], 'y': france_data['Total Deaths'], 'type': 'bar', 'name': 'Total Deaths'},
+              {'x': france_data['Date'], 'y': france_data['New Cases'], 'type': 'bar', 'name': 'New Cases'},
+              {'x': france_data['Date'], 'y': france_data['New Deaths'], 'type': 'bar', 'name': 'New Deaths'}
+            ]
           }
-    ),       
-            
-            ])
+        )
+    ])
