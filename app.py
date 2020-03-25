@@ -8,6 +8,7 @@ import tab1 as tab1
 import tab2 as tab2
 import tab3 as tab3
 import tab4 as tab4
+import graph_tab3 as graph_tab3
 import colors as colors
 
 
@@ -48,7 +49,8 @@ def render_content(tab):
 @app.callback(Output('country-data', 'children'),
               [Input('countries-dropdown', 'value')])
 def return_graph(country):
-    return country
+ 
+    return graph_tab3.get_content(country)
 
 
 
