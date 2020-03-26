@@ -34,10 +34,17 @@ def get_content():
                         className='radio',
                         id='check_option',
                         style={
-                                'width' : '48%',
+                                'height': '40px',
+                                'align-items': 'center',
+                                'background-color': '#2d2d2d',
+                                'width': '57%',
+                                'left': '23%',
+                                'position': 'absolute',
                                 'display': 'flex',
                                 'justify-content' : 'space-evenly',
-                                'color' : '#085A7A'
+                                'color' : 'rgb(186, 137, 126)',
+                                'border-radius': '14px',
+                                'box-shadow': 'rgb(132, 107, 107) 0px 0px 10px',
                             },
                         options = [
                                 {'label' : 'Mort', 'value' : 'mort'},
