@@ -12,8 +12,6 @@ import graph_tab3 as graph_tab3
 import chloro_map_tab4 as chloro_map_tab4
 import colors as colors
 
-
-
 colors = colors.get()
 
 app = dash.Dash(__name__,)

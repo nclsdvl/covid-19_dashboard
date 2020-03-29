@@ -34,7 +34,7 @@ for file in files :
     df = df.rename(columns={'Code': 'code'})
     datas[file] = df
 
-
+# recuperation du bon csv en fonction du slider date
 def get_csv(id_date) :
     dir_path = os.path.dirname(os.path.realpath(__file__))
     csv_file = os.path.join(dir_path, 'map\\archive\\'+files[id_date])
