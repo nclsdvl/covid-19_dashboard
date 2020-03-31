@@ -47,7 +47,7 @@ jours = []
 for elt in files :
     jours.append(elt[-9:-4])
 
-# a supprimer
+
     
 jours_formate = []
 for jour in jours :
@@ -62,14 +62,18 @@ def get_content(case, id_date) :
         col_name = 'Nombre cumulé total décédées 2020-{}'.format(jours_formate[id_date])
         col_sum_name_h = col_name.replace('total', 'homme')
         col_sum_name_f = col_name.replace('total', 'femme')
+        range_color = [0,500]
     elif case == 'hospitalisation' :
         col_name = 'Nombre total actuellement hospitalisées 2020-{}'.format(jours_formate[id_date])
         col_sum_name_h = col_name.replace('total', 'homme')
         col_sum_name_f = col_name.replace('total', 'femme')
+        range_color = [0,2000]
+        
     elif case == 'reanimation' :
         col_name = 'Nombre total actuellement en réanimation ou soins intensifs 2020-{}'.format(jours_formate[id_date])
         col_sum_name_h = col_name.replace('total', 'homme')
         col_sum_name_f = col_name.replace('total', 'femme')
+        range_color = [0,500]
     
     # Récupération du csv correspondant au slider (date)
     df = pd.read_csv(get_csv(id_date), encoding='utf-8') 
@@ -80,6 +84,16 @@ def get_content(case, id_date) :
     fig = px.choropleth(df, 
                         geojson=locations, 
                         color=col_name,
+                        range_color=range_color,
+                        color_continuous_scale=[(0.00, "#ffffff"), (0.01, "#fff5f0"),
+                                                (0.01, "#fff5f0"), (0.02, "#fee0d2"),
+                                                (0.02, "#fee0d2"), (0.03, "#fcbba1"),
+                                                (0.03, '#fcbba1'), (0.05, '#fc9272'),
+                                                (0.05, '#fc9272'), (0.1, '#fb6a4a'),
+                                                (0.1, '#fb6a4a'), (0.2, '#ef3b2c'),
+                                                (0.2, '#ef3b2c'), (0.5, '#cb181d'),
+                                                (0.5, '#cb181d'), (0.8, '#a50f15'),
+                                                 (0.8, '#a50f15'), (1, '#e0fd4a')],
                         locations="Libellé", 
                         featureidkey="properties.nom", 
                         template="plotly_dark",
@@ -95,8 +109,7 @@ def get_content(case, id_date) :
     fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_layout(paper_bgcolor='#111')  
-    fig.update_xaxes(fixedrange=True)
-    fig.update_yaxes(fixedrange=True)   
+
     
     nb_homme = df[col_sum_name_h].sum()
     nb_femme = df[col_sum_name_f].sum()

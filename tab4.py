@@ -11,9 +11,7 @@ import colors as colors
 import pandas as pd
 import os
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
-csv_file = os.path.join(dir_path, 'map/data_clean_28_03.csv')
-df = pd.read_csv(csv_file, encoding='utf-8') 
+
 colors = colors.get()
 
 data_folder = './map/archive'
@@ -23,14 +21,15 @@ i=0
 for elt in files :
     jours[i] = elt[-9:-4]
     i+=1
-    
+jours[len(jours)-1]
+titre = 'France data per department\n( last update : 2020-{} )'.format(jours[len(jours)-1].replace('_','-')) 
 
 def get_content():
   return html.Div([
 
     html.Div([
         html.H6(
-            children='France data per department\n( last update : 2020-03-28 )',
+            children=titre ,
             style={
                 'textAlign': 'center',
                 'color': colors['text']
@@ -63,19 +62,23 @@ def get_content():
         html.Br(),
         html.Br(),
         html.Br(),
+        html.Div(dcc.Slider(
+        id='crossfilter-day-slider',
+        
+        min=0,
+        max=len(files)-1,
+        value=len(files)-1,
+        marks=jours,
+        step=None
+        ),style={'width' : '44%', 'position' :'relative', 'left' : '29%', 'margin-bottom':'30px'}),        
+        
+
 
         
 
     ]),
     html.Div(id='french_map'),
     
-    html.Div(dcc.Slider(
-    id='crossfilter-year-slider',
-    min=0,
-    max=len(files)-1,
-    value=len(files)-1,
-    marks=jours,
-    step=None
-    ))
+
 
   ])

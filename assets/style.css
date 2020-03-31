@@ -388,6 +388,13 @@
     display: table;
     clear: both; }
   
+  .rc-slider-handle {
+    border: solid 2px #913e3e !important;
+  }
+  .rc-slider-track{
+    background-color: #5e1919;
+  }
+  
   
   /* Media Queries
   –––––––––––––––––––––––––––––––––––––––––––––––––– */

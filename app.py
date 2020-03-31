@@ -58,7 +58,7 @@ def return_graph(country):
 
 @app.callback(Output('french_map', 'children'),
               [Input('check_option', 'value'),
-               Input('crossfilter-year-slider', 'value')])
+               Input('crossfilter-day-slider', 'value')])
 def return_chloroMap(case, id_date):
     print('go chloro' + 'date = '+str(id_date))
     return chloro_map_tab4.get_content(case, id_date)
@@ -66,4 +66,5 @@ def return_chloroMap(case, id_date):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    #app.run_server(debug=False)
+    app.run_server(debug=True, use_reloader=False)
