@@ -29,10 +29,21 @@ with open(geojson_file, 'r', encoding='utf-8') as f:
 data_folder = './map/archive'
 files = [f for f in os.listdir(data_folder) if os.path.isfile(os.path.join(data_folder, f))]
 datas = {}
+# somme journaliere envoyé a tab4 pour graph évolution
+sum_journaliere_hospit = []
+sum_journaliere_rea = []
+sum_journaliere_deces = []
+jours_formate = []
+
 for file in files :
     df = pd.read_csv(data_folder+"/"+file, encoding='utf-8') 
     df = df.rename(columns={'Code': 'code'})
+    jour = file[-9 : -4]
+    jours_formate.append(jour[3:]+"-"+jour[0:2])
     datas[file] = df
+    sum_journaliere_hospit.append(df['Nombre total actuellement hospitalisées 2020-{}'.format(jours_formate[-1])].sum())
+    sum_journaliere_rea.append(df['Nombre total actuellement en réanimation ou soins intensifs 2020-{}'.format(jours_formate[-1])].sum())
+    sum_journaliere_deces.append(df['Nombre cumulé total décédées 2020-{}'.format(jours_formate[-1])].sum())
 
 # recuperation du bon csv en fonction du slider date
 def get_csv(id_date) :
@@ -41,19 +52,8 @@ def get_csv(id_date) :
     print(csv_file)
     return csv_file
 
+test = 1
 
-
-jours = []
-for elt in files :
-    jours.append(elt[-9:-4])
-
-
-    
-jours_formate = []
-for jour in jours :
-    jour_temp = jour[0 :2]
-    mois_temp = jour[3:]
-    jours_formate.append(mois_temp+"-"+jour_temp)
 
 def get_content(case, id_date) :
     # Récuperation des noms de colonnes utiles en fonction des checkbox (case) et du slider (date)
@@ -78,11 +78,15 @@ def get_content(case, id_date) :
     # Récupération du csv correspondant au slider (date)
     df = pd.read_csv(get_csv(id_date), encoding='utf-8') 
     df = df.rename(columns={'Code': 'code'})
+    labels = {'Nombre cumulé total décédées 2020-{}'.format(jours_formate[id_date]):'nombre de personnes',
+              'Nombre total actuellement hospitalisées 2020-{}'.format(jours_formate[id_date]): 'nombre de personnes',
+              'Nombre total actuellement en réanimation ou soins intensifs 2020-{}'.format(jours_formate[id_date]) : 'nombre de personnes'
+              }
     
     
     
     fig = px.choropleth(df, 
-                        geojson=locations, 
+                        geojson=locations,
                         color=col_name,
                         range_color=range_color,
                         color_continuous_scale=[(0.00, "#ffffff"), (0.01, "#fff5f0"),
@@ -98,10 +102,7 @@ def get_content(case, id_date) :
                         featureidkey="properties.nom", 
                         template="plotly_dark",
                         projection="mercator", 
-                        labels={'Nombre cumulé total décédées 2020-{}'.format(jours_formate[id_date]):'nombre de personnes',
-                                'Nombre total actuellement hospitalisées 2020-{}'.format(jours_formate[id_date]): 'nombre de personnes',
-                                'Nombre total actuellement en réanimation ou soins intensifs 2020-{}'.format(jours_formate[id_date]) : 'nombre de personnes'
-                                },
+                        labels=labels,
 
                         
                         
