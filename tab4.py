@@ -30,56 +30,148 @@ jours[len(jours)-1]
 titre = 'France data per department\n( last update : 2020-{} )'.format(jours[len(jours)-1].replace('_','-')) 
 
 
-
 list_percent_raise_rea = []
 
 for i in range (len(sum_journaliere_rea)-1) :
-    list_percent_raise_rea.append((sum_journaliere_rea[i+1]-sum_journaliere_rea[i]) * 100 / sum_journaliere_rea[i])           
+    list_percent_raise_rea.append(int((sum_journaliere_rea[i+1]-sum_journaliere_rea[i]) * 100 / sum_journaliere_rea[i]))         
+
+list_percent_raise_deces = []
+
+for i in range (len(sum_journaliere_deces)-1) :
+    list_percent_raise_deces.append(int((sum_journaliere_deces[i+1]-sum_journaliere_deces[i]) * 100 / sum_journaliere_deces[i])) 
+
+list_percent_raise_hospit = []
+
+for i in range (len(sum_journaliere_hospit)-1) :
+    list_percent_raise_hospit.append(int((sum_journaliere_hospit[i+1]-sum_journaliere_hospit[i]) * 100 / sum_journaliere_hospit[i])) 
 
 
 
 # création du graph par somme journaliere :
 
 fig = go.Figure()
-fig = make_subplots(rows=1, cols=2)
+fig = make_subplots(rows=1, cols=2, specs=[[{"secondary_y": "False"}, {"secondary_y": "True"}]])
+
 fig.add_trace(
-        go.Bar(
+        go.Scatter(
                 x= [jour for jour in jours.values()],
-                y= sum_journaliere_hospit
+                y= sum_journaliere_hospit,
+                name='number of hospitalisation',
+                hoverinfo='y',
+                line=dict(color='#4d4dff')
                 ),
             row = 1,
             col = 1,
-            
+            secondary_y=False
+        )
+fig.add_trace(
+        go.Scatter(
+                x=[jour for jour in list(jours.values())[1:]],
+                y = list_percent_raise_hospit,
+                line=dict(color='#9999ff', width=1, dash='dash'),
+                name='% dead evolution from day -1',
+                hoverinfo='y',
+                ),
+         
+        row=1,
+        col=1,
+        secondary_y=True
         )
 
 fig.add_trace(
         go.Scatter(
                x= [jour for jour in jours.values()],
-               y= sum_journaliere_deces
+               y= sum_journaliere_deces,
+               name='number of dead',
+               hoverinfo='y',
+               line=dict(color='#ff1a1a')
                ),
         row = 1,
         col = 2,
-
+        secondary_y=False
+        )              
+fig.add_trace(
+        go.Scatter(
+                x=[jour for jour in list(jours.values())[1:]],
+                y = list_percent_raise_deces,
+                line=dict(color='#ff8080', width=1, dash='dash'),
+                name='% dead evolution from day -1',
+                hoverinfo='y',
+                ),
+         
+        row=1,
+        col=2,
+        secondary_y=True
         )
+
 fig.add_trace(
         go.Scatter(
                x= [jour for jour in jours.values()],
-               y= sum_journaliere_rea
+               y= sum_journaliere_rea,
+               name='number of person in reanimation',
+               hoverinfo='y',
+               line=dict(color='#5bd75b')
+               
                ),
         row = 1,
         col = 2,
-
+        secondary_y=False
         )
+fig.add_trace(
+        go.Scatter(
+                x=[jour for jour in list(jours.values())[1:]],
+                y = list_percent_raise_rea,
+                line=dict(color='#239023', width=1, dash='dash'),
+                name='% reanimation evolution from day -1',
+                hoverinfo='y',
+                ),
+        
+        row=1,
+        col=2,
+        secondary_y=True
+        )
+        
+        
+        
+
+fig.update_yaxes(title_text="<b>percentage change compared<br> to the previous day</b>", 
+                 secondary_y=True, 
+                 row=1, col=1, 
+                 showgrid=False,
+                 color = 'grey',
+                 gridcolor='#303030')
+fig.update_yaxes(title_text="<b>percentage change compared<br> to the previous day</b>", 
+                 secondary_y=True,
+                 row=1, col=2, 
+                 range=[0, 70],
+                 showgrid=False,
+                 color = 'grey',
+                 gridcolor='#303030'
+                 )
+
+fig.update_xaxes(color = 'grey', 
+                 gridcolor='#303030', 
+                 linecolor='#111111', 
+                 row=1, col=2,
+                 showgrid=True,
+                 title_text ="<b>Day<b>")
+fig.update_xaxes(color = 'grey', 
+                 gridcolor='#303030', 
+                 linecolor='#111111', 
+                 row=1, col=1, 
+                 title_text ="<b>Day<b>",
+                 showgrid=True,)                
+
+                 
 fig.update_layout(
         title= {'text': "Plot Title"},
         paper_bgcolor= colors['background'],
         plot_bgcolor = colors['background'],
+        xaxis=dict(showgrid=True, zeroline=True)
         )
-
-
-fig.update_xaxes(color = 'grey', gridcolor='#303030')
+                
 fig.update_yaxes(color = 'grey',gridcolor='#303030')
-                 
+                
 
 """                 
 fig.update_annotations(dict(
