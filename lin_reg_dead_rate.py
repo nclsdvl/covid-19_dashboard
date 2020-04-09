@@ -3,6 +3,7 @@
 Created on Sun Mar 29 09:13:10 2020
 
 @author: MonOrdiPro
+
 """
 
 import numpy as np
@@ -14,8 +15,8 @@ import matplotlib.pyplot as plt
 
 # données %evolution mort
 
-y = np.array([50,37,16,20,36,27,26,22,17,15,12,16,16,14])
-x = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14])
+y = np.array([50,37,16,20,36,27,26,22,17,15,12,16,16,14,11])
+x = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
 
 x = x.reshape(-1,1)
 y = y.reshape(-1,1)
@@ -62,8 +63,34 @@ plt.annotate(
 plt.title('linear regression from rate dead evolution')
 plt.plot(x, model(X,theta_final), c='r')
 plt.savefig("lin_reg_dead_rate.png")
-# y = -1.96 * x + 37.88
+
+# a =  -1.964 / -1.9
+# b =  37.879 / 37.533
+# x0 = 19.33 / 19.75
+
+# y = -1.964 * x + 37.879
 # x = 37.88 / 1.96
 # x = 19.33
 
 # plateau dans 4 jours
+
+
+
+y = np.array([50,37,16,20,36,27,26,22,17,15,12,16,16,14,11])
+x = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
+
+x = x.reshape(-1,1)
+y = y.reshape(-1,1)
+lmodellineaire = LinearRegression()
+lmodellineaire.fit(x, y)
+
+# Evaluation du training set
+y_predict = lmodellineaire.predict(x)
+rmse = (np.sqrt(mean_squared_error(y, y_predict)))
+r2 = r2_score(y, y_predict)
+ 
+print('La performance du modèle sur la base dapprentissage')
+print('--------------------------------------')
+print('Lerreur quadratique moyenne est {}'.format(rmse)) # 6.85338521 / 6.853385
+print('le score R2 est {}'.format(r2)) # 0.5892732219199377 / 0.5892732219199377
+print('\n')

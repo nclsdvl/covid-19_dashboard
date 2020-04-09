@@ -64,9 +64,32 @@ plt.title('linear regression from rate hospitalisation evolution')
 plt.plot(x, model(X,theta_final), c='r')
 plt.savefig("lin_reg_hosp_rate.png")
 
+# a = -1.6923
+# b = 28.6923
+
 # y = -1.692 * x + 28.692
 # x = 28.692 / 1.692
 # x = 17
 
 # plateau dans 2 jours
 
+
+y = np.array([37,28,12,17,24,17,18,14,13,11,9,8,8,8,6])
+x = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
+
+x = x.reshape(-1,1)
+y = y.reshape(-1,1)
+lmodellineaire = LinearRegression()
+lmodellineaire.fit(x, y)
+
+# Evaluation du training set
+
+y_predict = lmodellineaire.predict(x)
+rmse = (np.sqrt(mean_squared_error(y, y_predict)))
+r2 = r2_score(y, y_predict)
+ 
+print('La performance du modèle sur la base dapprentissage')
+print('--------------------------------------')
+print('Lerreur quadratique moyenne est {}'.format(rmse)) # 4.617215753967029 / 4.501542945356502
+print('le score R2 est {}'.format(r2)) #0.6858299595141699 / 0.7086661341853036
+print('\n')

@@ -14,11 +14,11 @@ from chloro_map_tab4 import sum_journaliere_rea
 from chloro_map_tab4 import sum_journaliere_deces
 from chloro_map_tab4 import sum_journaliere_hospit
 from plotly.subplots import make_subplots
-
+from graph_tab3 import data
 
 colors = colors.get()
 
-
+df_evolution = data[(data['Total Deaths'] > 10)]
 data_folder = './map/archive'
 files = [f for f in os.listdir(data_folder) if os.path.isfile(os.path.join(data_folder, f))]
 jours = {}
@@ -69,7 +69,7 @@ fig.add_trace(
                 x=[jour for jour in list(jours.values())[1:]],
                 y = list_percent_raise_hospit,
                 line=dict(color='#9999ff', width=1, dash='dash'),
-                name='% dead evolution from day -1',
+                name='% hospitalisation evolution from day -1',
                 hoverinfo='y',
                 ),
          
@@ -171,16 +171,95 @@ fig.update_layout(
         )
                 
 fig.update_yaxes(color = 'grey',gridcolor='#303030')
+   
+
+df_evolution
+jours_china_deaths = 50
+
+
+fig2 = go.Figure()
+
+fig2.add_trace(
+        go.Scatter(
+                x= [ x for x in range (1, jours_china_deaths)],
+                y= df_evolution[df_evolution['Country'] == 'China']['Total Deaths'],
+                name='China',
+                hoverinfo='name + y',
+                line=dict(color='#FFA500')
+                ),
+
+        )
+
+fig2.add_trace(
+        go.Scatter(
+                x= [ x for x in range (1, jours_china_deaths)],
+                y= df_evolution[df_evolution['Country'] == 'France']['Total Deaths'],
+                name='France',
+                hoverinfo='name + y',
+                line=dict(color='#DC143C')
+                ),
+        )
+
+fig2.add_trace(
+        go.Scatter(
+                x= [ x for x in range (1, jours_china_deaths)],
+                y= df_evolution[df_evolution['Country'] == 'Spain']['Total Deaths'],
+                name='Spain',
+                hoverinfo='name + y',
+                line=dict(color='#6495ED')
+                ),
+
+        )
+
+                
+fig2.add_trace(
+        go.Scatter(
+                x= [ x for x in range (1, jours_china_deaths)],
+                y= df_evolution[df_evolution['Country'] == 'Italy']['Total Deaths'],
+                name='Italy',
+                hoverinfo='name + y',
+                line=dict(color='#9932CC')
+                ),
+
+
+        )
+
+fig2.add_trace(
+        go.Scatter(
+                x= [ x for x in range (1, jours_china_deaths)],
+                y= df_evolution[df_evolution['Country'] == 'United States']['Total Deaths'],
+                name='USA',
+                hoverinfo='name + y',
+                line=dict(color='#008000')
+                ),
+
+
+        )
+               
                 
 
-"""                 
-fig.update_annotations(dict(
-        xref='2000',
-        yref='22_03',
-        text = 'yo'
-        
-        ))
-"""
+
+fig2.update_yaxes(title_text="<b>percentage change compared<br> to the previous day</b>", 
+
+                 showgrid=False,
+                 color = 'grey',
+                 gridcolor='#303030')
+
+fig2.update_xaxes(color = 'grey', 
+                 gridcolor='#303030', 
+                 linecolor='#111111', 
+
+                 showgrid=True,
+                 title_text ="<b>Day<b>")
+
+                 
+fig2.update_layout(
+        title= {'text': "Plot Title"},
+        paper_bgcolor= colors['background'],
+        plot_bgcolor = colors['background'],
+        xaxis=dict(showgrid=True, zeroline=True)
+        )
+                
 
 
 def get_content():
@@ -229,7 +308,7 @@ def get_content():
         value=len(files)-1,
         marks=jours,
         step=None,
-        updatemode='drag'
+
         ),style={'width' : '44%', 'position' :'relative', 'left' : '29%', 'margin-bottom':'30px'}),        
         
 
@@ -242,9 +321,14 @@ def get_content():
         id='example-graph-2',
         figure=fig,
         
-    )
+    ),
     
-    
+    html.Div([
+    dcc.Graph(
+        id='graph_3',
+        figure=fig2,
+        
+    )],className = 'six columns',id='international_comparative'),    
 
 
   ])

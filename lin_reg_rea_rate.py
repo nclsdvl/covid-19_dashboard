@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 
 # données %evolution mort
 
-y = np.array([29,29,12,15,24,20,17,14,12,12,8,10,8,8])
-x = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14])
+y = np.array([29,29,12,15,24,20,17,14,12,12,8,10,8,8, 6])
+x = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
 
 x = x.reshape(-1,1)
 y = y.reshape(-1,1)
@@ -64,7 +64,8 @@ plt.title('linear regression from rate reanimation evolution')
 plt.plot(x, model(X,theta_final), c='r')
 plt.savefig("lin_reg_rea_rate.png")
 
-
+# a = -1.446 / -1.4461
+# b = 26.41758 / 26.4176
 
 # y = -1.446 * x + 26.418
 # x = 26.418 / 1.446
@@ -72,4 +73,22 @@ plt.savefig("lin_reg_rea_rate.png")
 
 # plateau dans 3 jours
 
+y = np.array([29,29,12,15,24,20,17,14,12,12,8,10,8,8])
+x = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14])
 
+x = x.reshape(-1,1)
+y = y.reshape(-1,1)
+lmodellineaire = LinearRegression()
+lmodellineaire.fit(x, y)
+
+# Evaluation du training set
+
+y_predict = lmodellineaire.predict(x)
+rmse = (np.sqrt(mean_squared_error(y, y_predict)))
+r2 = r2_score(y, y_predict)
+ 
+print('La performance du modèle sur la base dapprentissage')
+print('--------------------------------------')
+print('Lerreur quadratique moyenne est {}'.format(rmse)) # 3.978908285698083 /*
+print('le score R2 est {}'.format(r2)) # 0.6821983424195633 /
+print('\n')
